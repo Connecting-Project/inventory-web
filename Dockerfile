@@ -14,4 +14,4 @@ RUN npm run build
 
 EXPOSE 5000
 
-ENTRYPOINT [ "serve", "-s", "build" 
+ENTRYPOINT [ "serve", "-s", "build" ]

@@ -78,7 +78,8 @@ function Join() {
                 method: 'GET',
                 url: constants.BackUrl + `/api/v1/inventory/admin/id-check?id=${state.id}`
             }).then((response) => {
-                if (response.data === "check success") {
+                console.log(response);
+                if (response.data === "sucess") {
                     alert("사용해도 괜찮은 아이디입니다.");
                     setState({
                         ...state,
@@ -102,7 +103,7 @@ function Join() {
         var email = state.email + "@" + state.detail;
         if (state.id.replace(" ", "") === "") {
             alert("아이디를 입력해주세요.");
-        } else if (state.idck) {
+        } else if (!state.idck) {
             alert("아이디 중복확인을 해주세요.");
         } else if (state.pw.replace(" ", "") === "" || state.pw !== state.pwck || !reg_pw.test(state.pw)) {
             alert("비밀번호를 다시 확인해주세요.");

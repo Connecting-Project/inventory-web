@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
@@ -11,11 +11,19 @@ import '../assets/css/login.css';
 
 function Login() {
     const history = useHistory();
-    const { setLoginState } = useContext(GlobalStateContext);
+    const { loginState, adminState, setLoginState , setAdminState } = useContext(GlobalStateContext);
 
     const [state, setState] = useState({
         id: '',
         pw: '',
+    });
+
+    useEffect(()=>{
+        if(adminState){
+            history.push(`/admin`);
+        }else if(loginState){
+            history.push(`/main`);
+        }
     });
 
     const onMovepage = (str) => {
@@ -34,7 +42,7 @@ function Login() {
         console.log(response);
         axios({
             method:'POST',
-            url:constants.BackUrl+`/api/v1/inventroy/accounts/login`,
+            url:constants.BackUrl+`/api/v1/inventory/accounts/login`,
             data:{
                 id : response.profileObj.googleId,
                 email : response.profileObj.email,
@@ -42,16 +50,20 @@ function Login() {
                 access_token : response.accessToken,
             }
         }).then((res)=>{
-            console.log(res);
-            // sessionStorageCustom.setJsonItem('user',{
-            //     type: 'google',
-            //     id : response.profileObj.googleId,
-            //     email : response.profileObj.email,
-            //     name : response.profileObj.name,
-            //     access_token : response.accessToken,
-            //     profile_image: response.profileObj.imageUrl,
-            // });
-            // setLoginState(true);
+            if(res.data.uauth === 0){
+                alert("해당 계정은 권한이 없습니다.");
+            }else{
+                sessionStorageCustom.setJsonItem('user',{
+                    id : response.profileObj.googleId,
+                    email : response.profileObj.email,
+                    name : response.profileObj.name,
+                    access_token : response.accessToken,
+                });
+                setLoginState(true);
+                history.push(`/main`);
+            }
+            
+
         }).catch((error)=>{
             console.log(error);
         });
@@ -71,16 +83,17 @@ function Login() {
                 pwd: state.pw,
             }
         }).then((response)=>{
-            // if(response.data === "login Success"){
-            //     sessionStorageCustom.setJsonItem('admin',{
-            //         id : response.profileObj.googleId,
-            //         email : response.profileObj.email,
-            //         name : response.profileObj.name,
-            //         access_token : response.accessToken,
-            //         profile_image: response.profileObj.imageUrl,
-            //     });
-            //     setLoginState(true);
-            // }
+            console.log(response);
+            
+            sessionStorageCustom.setJsonItem('admin',{
+                id : response.data.id,
+                email : response.data.email,
+                name : response.data.name,
+                tel : response.data.tel,
+            });
+            setAdminState(true);
+            history.push(`/admin`);
+            
         }).catch((error)=>{
             console.log(error);
         })

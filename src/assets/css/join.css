@@ -1,0 +1,117 @@
+.join{
+    min-height: 100vh;
+    background-color: #f56a6a;
+    padding: 5% 0 0;
+}
+
+.join_container{
+    width: 750px;
+    margin: 0 auto;
+    padding: 10px 40px;
+    border: 1px solid gray;
+    border-radius: 4px;
+    font-family: 'Jua', sans-serif;
+    letter-spacing: 2px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    background-color: #FFFFFF;
+}
+
+.join_inner{
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    font-weight: 600;
+}
+
+.join_inner tr{
+    height: 40px;
+}
+
+.join_inner td{
+    padding: 0.55em 0 !important;
+}
+
+.join_input{
+    padding: 5px 10px !important;
+    display: inline-block !important;
+    width: 320px !important;
+}
+
+.id_check_btn{
+    padding: 11px 10px;
+    margin: 0;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(236, 236, 236);
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+    cursor: pointer;
+    border-radius: 3px;
+    font-family: 'Jua', sans-serif;
+    color: black !important;
+    height: 34px;
+    font-size: 1px;
+    line-height: 0;
+    outline: none;
+
+}
+
+.id_check_btn:hover{
+    background-color: rgb(241, 241, 241);
+}
+
+.id_check_btn img{
+    vertical-align: middle;
+}
+
+.join_btn{
+    width: 100%;
+    padding: 10px 5px;
+    margin-top: 13px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #ffabab;
+    color: white !important;
+    border: 1px;
+    border-radius: 4px;
+    font-family: 'Jua', sans-serif;
+    letter-spacing: 5px;
+    cursor: pointer;
+    line-height: 0;
+    box-shadow: none;
+    outline: none;
+}
+
+.join_btn:hover{
+    background-color: #f59292;
+
+}
+
+.pw_limit{
+    font-size: 12px;
+}
+
+.email_td{
+    font-size: 14px;
+}
+
+.join_selectbox{
+    padding: 5px;
+    width: 193px;
+    text-align-last:center;
+}
+
+.join_tel{
+    width: 155px !important;
+    display: inline-block !important;
+    text-align: center;
+}
+
+.join_tel_select{
+    padding: 5px;
+    width: 155px;
+    text-align: center;
+    display: inline-block !important;
+    text-align-last:center;
+}
+
+.join_tel_select option{
+    text-align: center;
+}

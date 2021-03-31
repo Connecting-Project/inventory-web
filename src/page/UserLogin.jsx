@@ -9,14 +9,10 @@ import constants from '../lib/constants';
 
 import '../assets/css/login.css';
 
-function Login() {
+function UserLogin() {
+
     const history = useHistory();
     const { loginState, adminState, setLoginState , setAdminState } = useContext(GlobalStateContext);
-
-    const [state, setState] = useState({
-        id: '',
-        pw: '',
-    });
 
     useEffect(()=>{
         if(adminState){
@@ -28,14 +24,6 @@ function Login() {
 
     const onMovepage = (str) => {
         history.push(`/${str}`);
-    }
-
-    const onLoginHandler = (e) => {
-        const {name , value} = e.target;
-        setState({
-            ...state,
-            [name] : value,
-        });
     }
 
     const resSuccessGoogle = (response) => {
@@ -74,44 +62,12 @@ function Login() {
     };
 
 
-    const onLocalLogin = () => {
-        axios({
-            method:'POST',
-            url:constants.BackUrl + `/api/v1/inventory/admin/login`,
-            data:{
-                id: state.id,
-                pwd: state.pw,
-            }
-        }).then((response)=>{
-            console.log(response);
-            
-            sessionStorageCustom.setJsonItem('admin',{
-                id : response.data.id,
-                email : response.data.email,
-                name : response.data.name,
-                tel : response.data.tel,
-            });
-            setAdminState(true);
-            history.push(`/admin`);
-            
-        }).catch((error)=>{
-            console.log(error);
-        })
-    }
+    
 
     return (
         <div className="login_container">
             <div className="login-page">
                 <div className="form">
-
-                    <h3>Admin Login</h3>
-                    <input type="text" className="login_input" placeholder="아이디" name="id" value={state.id} onChange={onLoginHandler}/>
-                    <input type="password" className="login_input" placeholder="비밀번호" name="pw" value={state.pw} onChange={onLoginHandler}/>
-                    <button className="login_btn" onClick={onLocalLogin}>로그인</button>
-                    <div className="link_btns">
-                        <span className="mvjoin_btn" onClick={()=>{onMovepage("join")}}>회원가입</span>
-                    </div>
-                    <hr/>
                     <h3>User Login</h3>
                     <GoogleLogin
                         clientId="462452844066-s6vfip9ifc94hj1jkma2jbe8g5p2ljaj.apps.googleusercontent.com"
@@ -121,13 +77,15 @@ function Login() {
                         cookiePolicy={'single_host_origin'}
                         className="google_login"
                     />
-
+                    <div className="link_btns">
+                        <span className="mvjoin_btn" onClick={()=>{onMovepage("admin_login")}}>관리자 로그인</span>
+                    </div>
                 </div>
-
+                
             </div>
         </div>
 
     );
 }
 
-export default Login;
+export default UserLogin;

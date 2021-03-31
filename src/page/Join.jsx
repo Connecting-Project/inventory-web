@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Check from '../assets/img/check.png';
 
 import '../assets/css/join.css';
@@ -9,6 +9,10 @@ import { useHistory } from 'react-router-dom';
 
 function Join() {
     const history = useHistory();
+
+    useEffect(()=>{
+        
+    });
 
     const [state, setState] = useState({
         id: '',
@@ -128,7 +132,7 @@ function Join() {
                 }
             }).then((response) => {
                 alert("회원가입이 완료되었습니다.");
-                history.push(`/`);
+                history.push(`/admin_login`);
             }).catch((error) => {
                 console.log(error);
             })

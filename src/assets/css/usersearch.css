@@ -1,0 +1,44 @@
+.user_search{
+    text-decoration: none;
+    position: relative;
+}
+
+.user_search_select{
+    width: 18% !important;
+    display: inline-block !important;
+    margin-right: 2%;
+    text-align-last:center;
+}
+
+.user_search_bar{
+    width: 80% !important;
+    display: inline-block !important;
+    padding-right: 2.75em !important;
+    
+}
+
+.user_search:before{
+    -moz-osx-font-smoothing: grayscale;
+			-webkit-font-smoothing: antialiased;
+			font-family: FontAwesome;
+			font-style: normal;
+			font-weight: normal;
+			text-transform: none !important;
+
+    transform: scaleX(-1);
+    color: #7f888f;
+    content: '\f002';
+    cursor: default;
+    display: block;
+    font-size: 1.5em;
+    height: 2em;
+    line-height: 2em;
+    opacity: 0.325;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 2em;
+
+}
+

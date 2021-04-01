@@ -11,7 +11,7 @@ import constants from '../lib/constants';
 function AdminLogin(){
     const history = useHistory();
 
-    const { loginState, adminState, setLoginState , setAdminState } = useContext(GlobalStateContext);
+    const { loginState, adminState, setAdminState } = useContext(GlobalStateContext);
 
     // 로그인이 되어있을 경우 해당페이지에서 팅겨냄.
     useEffect(()=>{

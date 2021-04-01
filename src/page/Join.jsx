@@ -101,6 +101,7 @@ function Join() {
     }
 
     const onSubmitHandler = () => {
+        //eslint-disable-next-line
         var reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
         let reg_pw = /^[a-z0-9]{7,14}$/;
 

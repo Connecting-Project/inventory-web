@@ -25,7 +25,7 @@ function Exist(){
         }).catch((error)=>{
             console.log(error);
         })
-    },[location])
+    },[location, history])
 
     return (
         <div className="loading-container">

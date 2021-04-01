@@ -70,6 +70,8 @@ function UserListSection({ userlist, pageNo, setUserlist }) {
                                 </td>
                             </tr>
                         )
+                    }else{
+                        return null;
                     }
                 })}
             </tbody>

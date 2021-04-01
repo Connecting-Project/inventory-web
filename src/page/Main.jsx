@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import '../assets/css/main.css';
 import $ from 'jquery';
 
@@ -66,7 +66,7 @@ function Main() {
 							event.stopPropagation();
 
 						// Check URL.
-							if (!href || href == '#' || href == '')
+							if (!href || href === '#' || href === '')
 								return;
 
 						// Hide sidebar.
@@ -75,7 +75,7 @@ function Main() {
 						// Redirect to href.
 							setTimeout(function() {
 
-								if (target == '_blank')
+								if (target === '_blank')
 									window.open(href);
 								else
 									window.location.href = href;
@@ -107,10 +107,10 @@ function Main() {
 
 				$window.on('load.sidebar-lock', function() {
 
-					var sh, wh, st;
+					var sh, wh;
 
 					// Reset scroll position to 0 if it's 1.
-						if ($window.scrollTop() == 1)
+						if ($window.scrollTop() === 1)
 							$window.scrollTop(0);
 
 					$window
@@ -124,7 +124,7 @@ function Main() {
 								y = Math.max(0, $window.scrollTop() - x);
 
 							// Lock/unlock.
-								if ($sidebar_inner.data('locked') == 1) {
+								if ($sidebar_inner.data('locked') === 1) {
 
 									if (y <= 0)
 										$sidebar_inner

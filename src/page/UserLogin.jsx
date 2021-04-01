@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect} from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
@@ -12,7 +12,7 @@ import '../assets/css/login.css';
 function UserLogin() {
 
     const history = useHistory();
-    const { loginState, adminState, setLoginState , setAdminState } = useContext(GlobalStateContext);
+    const { loginState, adminState, setLoginState } = useContext(GlobalStateContext);
 
     useEffect(()=>{
         if(adminState){

@@ -58,7 +58,7 @@ function Admin() {
                         <AppBar position="static" color="transparent">
                             <Tabs
                                 value={tab}
-                                inkBarStyle={{background: '#f56a6a'}}
+                                // inkBarStyle={{background: '#f56a6a'}}
                                 textColor="primary"
                                 onChange={handleChange}
                                 aria-label="disabled tabs example"

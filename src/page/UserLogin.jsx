@@ -46,6 +46,9 @@ function UserLogin() {
                     email : response.profileObj.email,
                     name : response.profileObj.name,
                     access_token : response.accessToken,
+                    uauth : res.data.uauth,
+                    productGroup : res.data.productGroup,
+                    tel: res.data.tel,
                 });
                 setLoginState(true);
                 history.push(`/main`);

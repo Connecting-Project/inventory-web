@@ -20,7 +20,7 @@ function Exist(){
                 }else{
                     history.push(`/join`);
                 }
-            },2000)
+            },1000)
             
         }).catch((error)=>{
             console.log(error);

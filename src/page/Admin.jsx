@@ -46,7 +46,7 @@ function Admin() {
                     <div className="inner">
 
                         <header id="header">
-                            <a href="index.html" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
+                            <a href="/admin" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
                             <ul className="icons">
                                 <li><a href="!#" className="icon fa-twitter"><span className="label">Twitter</span></a></li>
                                 <li><a href="!#" className="icon fa-facebook"><span className="label">Facebook</span></a></li>
@@ -68,7 +68,7 @@ function Admin() {
                             </Tabs>
                         </AppBar>
                         {tab === 0 ? <>
-                            <UserListSection userlist={userlist} pageNo={pageNo} />
+                            <UserListSection userlist={userlist} pageNo={pageNo} setUserlist={setUserlist}/>
                             <UserSearch setUserlist={setUserlist} setPageCount={setPageCount} />
                             <PageSection pageNo={pageNo} setPageNo={setPageNo} pageCount={pageCount} />
                         </> : <>

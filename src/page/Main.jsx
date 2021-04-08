@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import '../assets/css/main.css';
 import $ from 'jquery';
 
+import sesssionStorageCustom from '../lib/sessionStorageCustom';
+import { GlobalStateContext } from '../App';
+import { GoogleLogout } from 'react-google-login';
+
 function Main() {
+
 
 /*
 	Editorial by HTML5 UP
@@ -201,6 +206,14 @@ function Main() {
 
 	});
 
+    const user = sesssionStorageCustom.getJsonItem('user');
+    const { setLoginState } = useContext(GlobalStateContext);
+	
+	const googleLogout = (e) => {
+        setLoginState(false);
+        sessionStorage.clear();
+    };
+
 	return (
 		<div>
 			<div id="wrapper">
@@ -210,11 +223,15 @@ function Main() {
 						<header id="header">
 							<a href="index.html" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
 							<ul className="icons">
-								<li><a href="!#" className="icon fa-twitter"><span className="label">Twitter</span></a></li>
-								<li><a href="!#" className="icon fa-facebook"><span className="label">Facebook</span></a></li>
-								<li><a href="!#" className="icon fa-snapchat-ghost"><span className="label">Snapchat</span></a></li>
-								<li><a href="!#" className="icon fa-instagram"><span className="label">Instagram</span></a></li>
-								<li><a href="!#" className="icon fa-medium"><span className="label">Medium</span></a></li>
+								<li>{user.name}님 안녕하세요.</li>
+								<li className="logout_btn">
+									<GoogleLogout
+										clientId="462452844066-s6vfip9ifc94hj1jkma2jbe8g5p2ljaj.apps.googleusercontent.com"
+										buttonText="로그아웃"
+										onLogoutSuccess={googleLogout}
+									>
+									</GoogleLogout>
+								</li>
 							</ul>
 						</header>
 					</div>

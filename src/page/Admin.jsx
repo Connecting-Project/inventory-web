@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,6 +11,14 @@ import PageSection from '../component/Admin/PageSection';
 import UserListSection from '../component/Admin/UserListSection';
 import UserSearch from '../component/Admin/UserSearch';
 
+import ProductCreateBtn from '../component/Admin/ProductCreateBtn';
+import ProductCreate from '../component/Admin/ProductCreate';
+import ProductListSection from '../component/Admin/ProductListSection';
+import ProductSearch from '../component/Admin/ProductSearch';
+import ProductPageSection from '../component/Admin/ProductPageSection';
+
+import sesssionStorageCustom from '../lib/sessionStorageCustom';
+import { GlobalStateContext } from '../App';
 import constants from '../lib/constants';
 
 function Admin() {
@@ -20,10 +28,44 @@ function Admin() {
     const [pageNo, setPageNo] = useState(1);
     const [pageCount, setPageCount] = useState(1);
     const [userlist, setUserlist] = useState([]);
-    const [tab, setTab] = useState(0);
 
+    const [productPageNo, setProductPageNo] = useState(1);
+    const [productlist, setProductlist] = useState([]);
+    const [productCount, setProductCount] = useState(1);
+
+    const [tab, setTab] = useState(0);
+    const [pdCreate, setPdCreate] = useState(false);
+
+    const admin = sesssionStorageCustom.getJsonItem('admin');
+    const { setAdminState } = useContext(GlobalStateContext);
+    
     const handleChange = (event, newValue) => {
+        if(newValue === 1){
+            setPdCreate(false);
+        }
         setTab(newValue);
+
+        axios({
+            method: 'GET',
+            url: constants.BackUrl + `/api/v1/inventory/admin/user`,
+        }).then((response) => {
+            setUserlist(response.data.userlist);
+            setPageCount(Math.ceil(response.data.usercount / 10));
+            setPageNo(1);
+            setPdCreate(false);
+            axios({
+                method: `GET`,
+                url: constants.BackUrl + `/api/vi/inventory/products/list`,
+            }).then((response)=>{
+                setProductlist(response.data.list);
+                setProductCount(Math.ceil(response.data.list_num / 10));
+                setProductPageNo(1);
+            }).catch((error)=>{
+                console.log(error);
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
     };
 
     useEffect(() => {
@@ -31,13 +73,30 @@ function Admin() {
             method: 'GET',
             url: constants.BackUrl + `/api/v1/inventory/admin/user`,
         }).then((response) => {
+            console.log(response);
             setUserlist(response.data.userlist);
             setPageCount(Math.ceil(response.data.usercount / 10));
+            setPdCreate(false);
+            axios({
+                method: `GET`,
+                url: constants.BackUrl + `/api/vi/inventory/products/list`,
+            }).then((response)=>{
+                console.log(response.data);
+                setProductlist(response.data.list);
+                setProductCount(Math.ceil(response.data.list_num / 10));
+            }).catch((error)=>{
+                console.log(error);
+            });
         }).catch((error) => {
             console.log(error);
         });
     }, [location])
 
+
+    const onLogoutHandler = () => {
+        setAdminState(false);
+        sessionStorage.clear();
+    };
 
     return (
         <div>
@@ -48,14 +107,11 @@ function Admin() {
                         <header id="header">
                             <a href="/admin" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
                             <ul className="icons">
-                                <li><a href="!#" className="icon fa-twitter"><span className="label">Twitter</span></a></li>
-                                <li><a href="!#" className="icon fa-facebook"><span className="label">Facebook</span></a></li>
-                                <li><a href="!#" className="icon fa-snapchat-ghost"><span className="label">Snapchat</span></a></li>
-                                <li><a href="!#" className="icon fa-instagram"><span className="label">Instagram</span></a></li>
-                                <li><a href="!#" className="icon fa-medium"><span className="label">Medium</span></a></li>
+                                <li>{admin.name}님 안녕하세요.</li>
+                                <li><a href="/" onClick={onLogoutHandler}>로그아웃</a></li>
                             </ul>
                         </header>
-                        <AppBar position="static" color="transparent">
+                        <AppBar position="static" color="transparent" className={classes.appbar}>
                             <Tabs
                                 value={tab}
                                 // inkBarStyle={{background: '#f56a6a'}}
@@ -67,14 +123,20 @@ function Admin() {
                                 <Tab label="Product" className={classes.tab} />
                             </Tabs>
                         </AppBar>
-                        {tab === 0 ? <>
+                        {tab === 0 && <>
                             <UserListSection userlist={userlist} pageNo={pageNo} setUserlist={setUserlist}/>
-                            <UserSearch setUserlist={setUserlist} setPageCount={setPageCount} />
+                            <UserSearch setUserlist={setUserlist} setPageCount={setPageCount} setPageNo={setPageNo}/>
                             <PageSection pageNo={pageNo} setPageNo={setPageNo} pageCount={pageCount} />
-                        </> : <>
-
+                        </>} 
+                        {tab === 1 && !pdCreate && <>
+                            <ProductCreateBtn setPdCreate={setPdCreate}/>
+                            <ProductListSection productlist={productlist} productPageNo={productPageNo} />
+                            <ProductSearch setProductlist={setProductlist} setProductCount={setProductCount} setProductPageNo={setProductPageNo}/>
+                            <ProductPageSection productPageNo={productPageNo} setProductPageNo={setProductPageNo} productCount={productCount} />
                         </>}
-
+                        {tab === 1 && pdCreate && <>
+                            <ProductCreate />
+                        </>}
                     </div>
                 </div>
             </div>
@@ -88,5 +150,8 @@ export default Admin;
 const useStyles = makeStyles({
     tab: {
         boxShadow: 'none',
+    },
+    appbar: {
+        marginBottom: '20px',
     }
 });

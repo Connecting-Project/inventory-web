@@ -11,7 +11,7 @@ import AdminLogin from './page/AdminLogin';
 import Main from './page/Main';
 import Join from './page/Join';
 import Admin from './page/Admin';
-
+import ProductDetail from './page/ProductDetail';
 
 export const GlobalStateContext = React.createContext(null);
 
@@ -31,9 +31,9 @@ function App() {
 
           <RestrictRoute exact path="/join" component={Join} fallback={() => <Redirect to={`/`} />} isAllow={!(loginState || adminState)}/>
 
-          <RestrictRoute exact path="/main" component={Main} fallback={() => <Redirect to={`/`} />} isAllow={!loginState}/>
+          <RestrictRoute exact path="/main" component={Main} fallback={() => <Redirect to={`/`} />} isAllow={loginState}/>
           <RestrictRoute exact path="/admin" component={Admin} fallback={() => <Redirect to={`/`} />} isAllow={adminState}/>
-
+          <RestrictRoute exact path="/product/:id" component={ProductDetail} fallback={() => <Redirect to={`/`} />} isAllow={adminState}/>
         </Switch>
       </GlobalStateContext.Provider>
     </div>

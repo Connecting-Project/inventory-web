@@ -4,7 +4,7 @@ import constants from '../../lib/constants';
 
 import '../../assets/css/usersearch.css';
 
-function UserSearch({setUserlist,setPageCount}) {
+function UserSearch({setUserlist,setPageCount,setPageNo}) {
 
     const [name , setName] = useState('');
 
@@ -17,6 +17,7 @@ function UserSearch({setUserlist,setPageCount}) {
                 setUserlist(response.data.userlist);
                 setPageCount(Math.ceil(response.data.usercount/10));
                 setName('');
+                setPageNo(1);
             }).catch((error)=>{
                 console.log(error);
             });

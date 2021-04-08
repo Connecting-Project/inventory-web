@@ -1,0 +1,14 @@
+.userlist_table{
+    text-align: center;
+    word-break:break-all;
+}
+
+.userlist_table thead{
+    background: rgb(250 181 181);
+    color: white;
+    border-bottom: none;
+}
+
+.user_uauth_select{
+    text-align-last: center;
+}

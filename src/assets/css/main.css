@@ -4060,3 +4060,17 @@
 			margin-top: 0;
 			padding-top: 0;
 		}
+
+
+		.logout_btn > button {
+			padding: none !important;
+			box-shadow: none !important;
+		}
+
+		.logout_btn > button > div {
+			display: none !important;
+		}
+
+		.logout_btn > button > span {
+			padding: 0 !important;
+		}

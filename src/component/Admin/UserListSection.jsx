@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import constants from '../../lib/constants';
+import '../../assets/css/userlist.css';
 
 function UserListSection({ userlist, pageNo, setUserlist }) {
 
@@ -38,11 +39,11 @@ function UserListSection({ userlist, pageNo, setUserlist }) {
     }
 
     return (
-        <table>
+        <table className="userlist_table">
             <colgroup>
                     <col style={{ width: "25%" }} />
-                    <col style={{ width: "25%" }} />
-                    <col style={{ width: "35%" }} />
+                    <col style={{ width: "20%" }} />
+                    <col style={{ width: "40%" }} />
                     <col style={{ width: "15%" }} />
             </colgroup>
             <thead>

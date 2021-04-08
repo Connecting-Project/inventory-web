@@ -38,9 +38,11 @@ function UserLogin() {
                 access_token : response.accessToken,
             }
         }).then((res)=>{
+            console.log(res);
             if(res.data.uauth === 0){
                 alert("해당 계정은 권한이 없습니다.");
             }else{
+
                 sessionStorageCustom.setJsonItem('user',{
                     id : response.profileObj.googleId,
                     email : response.profileObj.email,
@@ -87,7 +89,6 @@ function UserLogin() {
                 
             </div>
         </div>
-
     );
 }
 

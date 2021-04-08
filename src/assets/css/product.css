@@ -1,5 +1,5 @@
 .product_create_inner{
-    max-width: 110em;
+    max-width: 500px;
     margin: 0 auto;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .product_create_row>*{
-    padding: 10px 15px;
+    padding: 10px 0px;
     display: inline-block;
 
 }
@@ -42,10 +42,20 @@
     margin-top: 40px;
 }
 
-.product_create_btn>*{
-    width: 485px;
+.product_create_btn>*:first-child{
+    width: 100%;
     color: #FFFFFF !important;
     background: #f56a6a !important;
+    box-shadow: none;
+    margin: 10px 0;
+}
+
+.product_create_btn>*:nth-child(2){
+    width: 100%;
+    color: #FFFFFF !important;
+    background: #ffe3be !important;
+    box-shadow: none;
+
 }
 
 .productlist_table img{
@@ -145,8 +155,42 @@
 
 .back_btn{
     width: 100%;
-    margin: 20px 0;
+    margin: 5px 0 20px;
     outline: none;
+    box-shadow: none;
+    background-color: #f56a6a;
+    color: #FFFFFF !important;
+}
+
+.back_btn:hover{
+    background-color: #ffa1a1;
+}
+
+.update_btn{
+    width: 100%;
+    margin: 20px 0 5px;
+    outline: none;
+    box-shadow: none;
+    background-color: #ffc06e;
+    color: #FFFFFF !important;
+}
+
+.update_btn:hover{
+    background-color: #ffd195;
+}
+
+.delete_btn{
+    width: 100%;
+    margin: 5px 0;
+    outline: none;
+    box-shadow: none;
+    background-color: #ff3737;
+    color: #FFFFFF !important;
+
+}
+
+.delete_btn:hover{
+    background-color: #ff7c7c;
 }
 
 .product_list_product:hover{

@@ -16,8 +16,11 @@ function ProductDetail() {
     const history = useHistory();
 
     const location = useLocation();
+
     const admin = sesssionStorageCustom.getJsonItem('admin');
-    const { setAdminState } = useContext(GlobalStateContext);
+    const user = sesssionStorageCustom.getJsonItem('user');
+
+    const { setAdminState, setLoginState } = useContext(GlobalStateContext);
 
     const [product, setProduct] = useState({
         id: "",
@@ -47,15 +50,40 @@ function ProductDetail() {
         });
     }, [location]);
 
-    const onLogoutHandler = () => {
+    const onAdminLogoutHandler = () => {
         setAdminState(false);
         sessionStorage.clear();
     };
 
-    const onBackHandler = () => {
+    const onUserLogoutHandler = () => {
+        setLoginState(false);
+        sessionStorage.clear();
+    };
+
+    const onAdminBackHandler = () => {
         history.push(`/admin`);
     }
 
+    const onUserBackHandler = () => {
+        history.push(`/main`);
+    }
+
+    const onMoveUpdateHandler = () => {
+        history.push(`/product/update/${location.pathname.substring(9)}`);
+    }
+
+    const onProductDeleteHandler = () => {
+        axios({
+            method:`DELETE`,
+            url: constants.BackUrl + `/api/vi/inventory/products/?sn=${product.sn}`
+        }).then((response)=>{
+            alert('삭제가 완료되었습니다.');
+            history.push(`/admin`);
+        }).catch((error)=>{
+            alert('오류로 인하여 삭제하지 못하였습니다.');
+            history.push(`/admin`);
+        })
+    }
 
     return (
         <div>
@@ -63,10 +91,13 @@ function ProductDetail() {
                 <div id="main">
                     <div className="inner">
                         <header id="header">
-                            <a href="/admin" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
+                            {admin && <a href="/admin" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>}
+                            {user && <a href="/main" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>}
                             <ul className="icons">
-                                <li>{admin.name}님 안녕하세요.</li>
-                                <li><a href="/" onClick={onLogoutHandler}>로그아웃</a></li>
+                                {admin && <li>{admin.name}님 안녕하세요.</li>}
+                                {admin && <li><a href="/" onClick={onAdminLogoutHandler}>로그아웃</a></li> }
+                                {user && <li>{user.name}님 안녕하세요.</li>}
+                                {user && <li><a href="/" onClick={onUserLogoutHandler}>로그아웃</a></li> }
                             </ul>
                         </header>
 
@@ -178,7 +209,10 @@ function ProductDetail() {
                                         </table> : <>로그가 없습니다.</>
                                     }
 
-                                    <button className="back_btn" onClick={onBackHandler}>메인으로 가기</button>
+                                    {admin && <button className="update_btn" onClick={onMoveUpdateHandler}>수정하기</button>}
+                                    {admin && <button className="delete_btn" onClick={onProductDeleteHandler}>삭제하기</button>}
+                                    {admin && <button className="back_btn" onClick={onAdminBackHandler}>메인으로 가기</button>}
+                                    {user && <button className="back_btn" onClick={onUserBackHandler}>메인으로 가기</button>}
                                 </div>
                             </Paper>
 

@@ -1,10 +1,19 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import '../assets/css/main.css';
 import $ from 'jquery';
+import constants from '../lib/constants';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 import sesssionStorageCustom from '../lib/sessionStorageCustom';
 import { GlobalStateContext } from '../App';
 import { GoogleLogout } from 'react-google-login';
+
+import ProductListSection from '../component/User/ProductListSection';
+import ProductSearch from '../component/User/ProductSearch';
+import ProductPageSection from '../component/User/ProductPageSection';
+
+
 
 function Main() {
 
@@ -208,11 +217,43 @@ function Main() {
 
     const user = sesssionStorageCustom.getJsonItem('user');
     const { setLoginState } = useContext(GlobalStateContext);
-	
+    const location = useLocation();
+
+
+    const [productPageNo, setProductPageNo] = useState(1);
+    const [productlist, setProductlist] = useState([]);
+    const [productCount, setProductCount] = useState(1);
+
 	const googleLogout = (e) => {
         setLoginState(false);
         sessionStorage.clear();
     };
+
+	useEffect(()=>{
+		axios({
+			method: `GET`,
+			url: constants.BackUrl + `/api/vi/inventory/products/list`,
+		}).then((response)=>{
+			setProductlist(response.data.list);
+			setProductCount(Math.ceil(response.data.list_num / 10));
+			setProductPageNo(1);
+		}).catch((error)=>{
+			console.log(error);
+		});
+	},[location])
+
+	const onCategoryClickHandler = (category) => {
+		axios({
+			method: `GET`,
+			url: constants.BackUrl + `/api/vi/inventory/products/category?category=${category}`,
+		}).then((response)=>{
+			setProductlist(response.data.list);
+			setProductCount(Math.ceil(response.data.list_num / 10));
+			setProductPageNo(1);
+		}).catch((error)=>{
+			console.log(error);
+		});
+	}
 
 	return (
 		<div>
@@ -221,7 +262,7 @@ function Main() {
 					<div className="inner">
 
 						<header id="header">
-							<a href="index.html" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
+							<a href="/main" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
 							<ul className="icons">
 								<li>{user.name}님 안녕하세요.</li>
 								<li className="logout_btn">
@@ -234,49 +275,32 @@ function Main() {
 								</li>
 							</ul>
 						</header>
+
+						<ProductListSection productlist={productlist} productPageNo={productPageNo} />
+                        <ProductSearch setProductlist={setProductlist} setProductCount={setProductCount} setProductPageNo={setProductPageNo}/>
+                        <ProductPageSection productPageNo={productPageNo} setProductPageNo={setProductPageNo} productCount={productCount} />
+
 					</div>
 				</div>
 
 				<div id="sidebar">
 					<div className="inner">
 
-						<section id="search" className="alt">
-							<form method="post" action="#">
-								<input type="text" name="query" id="query" placeholder="Search" />
-							</form>
-						</section>
-
 						<nav id="menu">
 							<header className="major">
-								<h2>Menu</h2>
+								<h2>Category</h2>
 							</header>
 							<ul>
-								<li><a href="index.html">Homepage</a></li>
-								<li><a href="generic.html">Generic</a></li>
-								<li><a href="elements.html">Elements</a></li>
-								<li>
-									<span className="opener">Submenu</span>
-									<ul>
-										<li><a href="!#">Lorem Dolor</a></li>
-										<li><a href="!#">Ipsum Adipiscing</a></li>
-										<li><a href="!#">Tempus Magna</a></li>
-										<li><a href="!#">Feugiat Veroeros</a></li>
-									</ul>
-								</li>
-								<li><a href="!#">Etiam Dolore</a></li>
-								<li><a href="!#">Adipiscing</a></li>
-								<li>
-									<span className="opener">Another Submenu</span>
-									<ul>
-										<li><a href="!#">Lorem Dolor</a></li>
-										<li><a href="!#">Ipsum Adipiscing</a></li>
-										<li><a href="!#">Tempus Magna</a></li>
-										<li><a href="!#">Feugiat Veroeros</a></li>
-									</ul>
-								</li>
-								<li><a href="!#">Maximus Erat</a></li>
-								<li><a href="!#">Sapien Mauris</a></li>
-								<li><a href="!#">Amet Lacinia</a></li>
+								<li><span onClick={()=>{onCategoryClickHandler("컴퓨터")}}>컴퓨터</span></li>
+								<li><span onClick={()=>{onCategoryClickHandler("서버")}}>서버</span></li>
+								<li><span onClick={()=>{onCategoryClickHandler("네트워크")}}>네트워크</span></li>
+								<li><span onClick={()=>{onCategoryClickHandler("주변기기")}}>주변기기</span></li>
+								<li><span onClick={()=>{onCategoryClickHandler("센서")}}>센서</span></li>
+								<li><span onClick={()=>{onCategoryClickHandler("전기부품")}}>전기부품</span></li>
+								<li><span onClick={()=>{onCategoryClickHandler("엑추에이터")}}>엑추에이터</span></li>
+								<li><span onClick={()=>{onCategoryClickHandler("오픈소스H/W")}}>오픈소스H/W</span></li>
+								<li><span onClick={()=>{onCategoryClickHandler("기타")}}>기타</span></li>
+
 							</ul>
 						</nav>
 

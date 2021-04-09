@@ -8,6 +8,9 @@ import { useLocation, useHistory } from 'react-router-dom';
 
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 
 import "../assets/css/product.css";
 
@@ -21,7 +24,7 @@ function ProductDetail() {
     const user = sesssionStorageCustom.getJsonItem('user');
 
     const { setAdminState, setLoginState } = useContext(GlobalStateContext);
-
+    const [open, setOpen] = useState(false);
     const [product, setProduct] = useState({
         id: "",
         category: "",
@@ -36,6 +39,7 @@ function ProductDetail() {
         type: 0,
     });
     const [logs, setLogs] = useState([]);
+    const [rentNum, setRentNum] = useState(0);
 
     useEffect(() => {
         axios({
@@ -74,15 +78,51 @@ function ProductDetail() {
 
     const onProductDeleteHandler = () => {
         axios({
-            method:`DELETE`,
+            method: `DELETE`,
             url: constants.BackUrl + `/api/vi/inventory/products/?sn=${product.sn}`
-        }).then((response)=>{
+        }).then((response) => {
             alert('삭제가 완료되었습니다.');
             history.push(`/admin`);
-        }).catch((error)=>{
+        }).catch((error) => {
             alert('오류로 인하여 삭제하지 못하였습니다.');
             history.push(`/admin`);
         })
+    }
+
+    const onRentChangeHandler = (e) => {
+
+        if(Number(e.nativeEvent.data) >= 0 && Number(e.nativeEvent.data) <= 9){
+            if(e.target.value.replace(/(^0+)/,"") > product.stock){
+                setRentNum(product.stock);
+            }else{
+                setRentNum(e.target.value.replace(/(^0+)/,""));
+            }
+        }
+    }
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const onProductRentHandler = () => {
+        if(rentNum === 0){
+            alert("0개는 대여불가능합니다.");
+        }else{
+            axios({
+                method:`POST`,
+                url: constants.BackUrl + `/api/vi/inventory/devices/rent?num=${rentNum}&pro_id=${product.id}&user_id=${user.id}`
+            }).then((response)=>{
+                setOpen(false);
+                setRentNum(0);
+                history.push(`/product/${product.id}`);
+            }).catch((error)=>{
+                console.log(error);
+            })
+        }
     }
 
     return (
@@ -95,9 +135,9 @@ function ProductDetail() {
                             {user && <a href="/main" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>}
                             <ul className="icons">
                                 {admin && <li>{admin.name}님 안녕하세요.</li>}
-                                {admin && <li><a href="/" onClick={onAdminLogoutHandler}>로그아웃</a></li> }
+                                {admin && <li><a href="/" onClick={onAdminLogoutHandler}>로그아웃</a></li>}
                                 {user && <li>{user.name}님 안녕하세요.</li>}
-                                {user && <li><a href="/" onClick={onUserLogoutHandler}>로그아웃</a></li> }
+                                {user && <li><a href="/" onClick={onUserLogoutHandler}>로그아웃</a></li>}
                             </ul>
                         </header>
 
@@ -166,7 +206,7 @@ function ProductDetail() {
 
                                     {/* 남은 수량 */}
                                     <div className="product_read_row">
-                                        <div>전체 수량</div>
+                                        <div>남은 수량</div>
                                         <div>
                                             {product.stock}
                                         </div>
@@ -177,16 +217,14 @@ function ProductDetail() {
                                     {logs.length !== 0 ?
                                         <table className="log_table">
                                             <colgroup>
-                                                <col style={{ width: "30%" }} />
-                                                <col style={{ width: "10%" }} />
                                                 <col style={{ width: "15%" }} />
-                                                <col style={{ width: "10%" }} />
                                                 <col style={{ width: "25%" }} />
-                                                <col style={{ width: "10%" }} />
+                                                <col style={{ width: "20%" }} />
+                                                <col style={{ width: "25%" }} />
+                                                <col style={{ width: "15%" }} />
                                             </colgroup>
                                             <thead>
                                                 <tr>
-                                                    <td>ID</td>
                                                     <td>이름</td>
                                                     <td>전화번호</td>
                                                     <td>날짜</td>
@@ -197,10 +235,9 @@ function ProductDetail() {
                                             <tbody>
                                                 {logs.map((log) => (
                                                     <tr key={log.id}>
-                                                        <td>{log.user.id}</td>
                                                         <td>{log.user.name}</td>
                                                         <td>{log.user.tel}</td>
-                                                        <td>{log.timestamp.substring(0,10)}-{log.timestamp.substring(11)}</td>
+                                                        <td>{log.timestamp.substring(0, 10)}-{log.timestamp.substring(11)}</td>
                                                         <td>{log.quantity}</td>
                                                         <td>{log.status}</td>
                                                     </tr>
@@ -212,10 +249,32 @@ function ProductDetail() {
                                     {admin && <button className="update_btn" onClick={onMoveUpdateHandler}>수정하기</button>}
                                     {admin && <button className="delete_btn" onClick={onProductDeleteHandler}>삭제하기</button>}
                                     {admin && <button className="back_btn" onClick={onAdminBackHandler}>메인으로 가기</button>}
+                                    {user && <button className="update_btn" onClick={handleOpen}>대여하기</button>}
                                     {user && <button className="back_btn" onClick={onUserBackHandler}>메인으로 가기</button>}
                                 </div>
                             </Paper>
-
+                            <Modal
+                                aria-labelledby="transition-modal-title"
+                                aria-describedby="transition-modal-description"
+                                className={classes.modal}
+                                open={open}
+                                onClose={handleClose}
+                                closeAfterTransition
+                                BackdropComponent={Backdrop}
+                                BackdropProps={{
+                                    timeout: 500,
+                                }}
+                            >
+                                <Fade in={open}>
+                                    <div className={classes.modalpaper}>
+                                        <h2 id="transition-modal-title">대여할 개수를 입력해주세요.</h2>
+                                        <h3>남은 개수 : {product.stock}</h3>
+                                        <input type="text" name="rentNum" value={rentNum} onChange={onRentChangeHandler} autoComplete='off'/>
+                                        <button className="update_btn" onClick={onProductRentHandler}>대여</button>
+                                        <button className="back_btn" onClick={()=>{setOpen(false)}}>취소</button>
+                                    </div>
+                                </Fade>
+                            </Modal>
 
 
                         </div>
@@ -237,4 +296,16 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
     },
 
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    modalpaper: {
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+        outline: 'none',
+    },
 }));

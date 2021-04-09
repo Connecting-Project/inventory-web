@@ -42,18 +42,42 @@ function UserLogin() {
             if(res.data.uauth === 0){
                 alert("해당 계정은 권한이 없습니다.");
             }else{
-
-                sessionStorageCustom.setJsonItem('user',{
-                    id : response.profileObj.googleId,
-                    email : response.profileObj.email,
-                    name : response.profileObj.name,
-                    access_token : response.accessToken,
-                    uauth : res.data.uauth,
-                    productGroup : res.data.productGroup,
-                    tel: res.data.tel,
-                });
-                setLoginState(true);
-                history.push(`/main`);
+                if(res.data.tel === "없음"){
+                    var tel = prompt("전화번호를 입력해주세요. ('-' 포함)","");
+                    if(tel){
+                        axios({
+                            method: `PUT`,
+                            url: constants.BackUrl + `/api/v1/inventory/accounts/accounts?id=${response.profileObj.googleId}&tel=${tel}`
+                        }).then((response_update)=>{
+                            sessionStorageCustom.setJsonItem('user',{
+                                id : response.profileObj.googleId,
+                                email : response.profileObj.email,
+                                name : response.profileObj.name,
+                                access_token : response.accessToken,
+                                uauth : res.data.uauth,
+                                productGroup : res.data.productGroup,
+                                tel: res.data.tel,
+                            });
+                            setLoginState(true);
+                            history.push(`/main`);
+                        }).catch((error)=>{
+                            console.log(error);
+                        })
+                    }
+                }else{
+                    sessionStorageCustom.setJsonItem('user',{
+                        id : response.profileObj.googleId,
+                        email : response.profileObj.email,
+                        name : response.profileObj.name,
+                        access_token : response.accessToken,
+                        uauth : res.data.uauth,
+                        productGroup : res.data.productGroup,
+                        tel: res.data.tel,
+                    });
+                    setLoginState(true);
+                    history.push(`/main`);
+                }
+                
             }
             
 

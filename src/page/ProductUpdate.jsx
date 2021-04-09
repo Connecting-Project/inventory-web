@@ -1,11 +1,11 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import constants from '../lib/constants';
-import sesssionStorageCustom from '../lib/sessionStorageCustom';
-import { GlobalStateContext } from '../App';
+
 import { useLocation, useHistory } from 'react-router-dom';
+import Header from '../component/Header';
 
 function ProductUpdate() {
     const location = useLocation();
@@ -28,9 +28,6 @@ function ProductUpdate() {
     const [img, setImage] = useState(null);
     // const [base64, setBase64] = useState('');
 
-    const admin = sesssionStorageCustom.getJsonItem('admin');
-    const { setAdminState } = useContext(GlobalStateContext);
-
     const id = location.pathname.substring(16);
 
     useEffect(()=>{
@@ -38,7 +35,6 @@ function ProductUpdate() {
             method: `GET`,
             url: constants.BackUrl + `/api/vi/inventory/products/detail?id=${id}`
         }).then((response) => {
-            console.log(response);
             setProduct(response.data.product);
         }).catch((error) => {
             console.log(error);
@@ -49,7 +45,6 @@ function ProductUpdate() {
         const { name, value } = e.target;
 
         if (name === "price" || name === "quantity") {
-            console.log(e);
             if (Number(e.nativeEvent.data) >= 0 && Number(e.nativeEvent.data) <= 9 && !(e.nativeEvent.data === " ")) {
                 setProduct({
                     ...product,
@@ -94,7 +89,6 @@ function ProductUpdate() {
     }
 
     const onProductUpdate = (e) => {
-        console.log(product.price);
 
         if (product.buy === "") {
             alert("구입처를 입력해주세요.");
@@ -132,7 +126,6 @@ function ProductUpdate() {
                     type: product.type,
                 },
             }).then((response) => {
-                console.log(response);
                 history.push(`/admin`);
             }).catch((error) => {
                 console.log(error);
@@ -140,10 +133,7 @@ function ProductUpdate() {
         }
 
     }
-    const onLogoutHandler = () => {
-        setAdminState(false);
-        sessionStorage.clear();
-    };
+
 
     const onUpdateCancel = () => {
         history.push(`/admin`);
@@ -155,13 +145,7 @@ function ProductUpdate() {
                 <div id="main">
                     <div className="inner">
 
-                        <header id="header">
-                            <a href="/admin" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
-                            <ul className="icons">
-                                <li>{admin.name}님 안녕하세요.</li>
-                                <li><a href="/" onClick={onLogoutHandler}>로그아웃</a></li>
-                            </ul>
-                        </header>
+                        <Header/>
                         <Paper className={classes.paper}>
                             <div className="product_create_inner">
                                 {/* 카테고리 */}

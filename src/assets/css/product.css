@@ -194,8 +194,11 @@
 }
 
 .product_list_product:hover{
-    background-color: rgb(230, 230, 230);
+    background-color: rgb(245, 245, 245);
     cursor: pointer;
+}
+.log_table{
+    margin: 0;
 }
 
 .log_table td{
@@ -208,4 +211,28 @@
 
 .log_table tr{
     padding: 2px 0;
+}
+
+.log_table_container{
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.device_table{
+    text-align: center;
+}
+
+.device_table th {
+    text-align: center;
+}
+
+.device_table button {
+    box-shadow: none;
+    background-color: #ffd195;
+    color: #FFFFFF !important;
+    outline: none;
+}
+
+.device_table button:hover {
+    background-color: #ffdfb6;
 }

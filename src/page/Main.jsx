@@ -1,18 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import '../assets/css/main.css';
 import $ from 'jquery';
 import constants from '../lib/constants';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
-import sesssionStorageCustom from '../lib/sessionStorageCustom';
-import { GlobalStateContext } from '../App';
-import { GoogleLogout } from 'react-google-login';
-
 import ProductListSection from '../component/User/ProductListSection';
 import ProductSearch from '../component/User/ProductSearch';
 import ProductPageSection from '../component/User/ProductPageSection';
-
+import Header from '../component/Header';
 
 
 function Main() {
@@ -215,8 +211,6 @@ function Main() {
 
 	});
 
-    const user = sesssionStorageCustom.getJsonItem('user');
-    const { setLoginState } = useContext(GlobalStateContext);
     const location = useLocation();
 
 
@@ -224,10 +218,6 @@ function Main() {
     const [productlist, setProductlist] = useState([]);
     const [productCount, setProductCount] = useState(1);
 
-	const googleLogout = (e) => {
-        setLoginState(false);
-        sessionStorage.clear();
-    };
 
 	useEffect(()=>{
 		axios({
@@ -261,21 +251,7 @@ function Main() {
 				<div id="main">
 					<div className="inner">
 
-						<header id="header">
-							<a href="/main" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
-							<ul className="icons">
-								<li>{user.name}님 안녕하세요.</li>
-								<li className="logout_btn">
-									<GoogleLogout
-										clientId="462452844066-s6vfip9ifc94hj1jkma2jbe8g5p2ljaj.apps.googleusercontent.com"
-										buttonText="로그아웃"
-										onLogoutSuccess={googleLogout}
-									>
-									</GoogleLogout>
-								</li>
-							</ul>
-						</header>
-
+						<Header />
 						<ProductListSection productlist={productlist} productPageNo={productPageNo} />
                         <ProductSearch setProductlist={setProductlist} setProductCount={setProductCount} setProductPageNo={setProductPageNo}/>
                         <ProductPageSection productPageNo={productPageNo} setProductPageNo={setProductPageNo} productCount={productCount} />

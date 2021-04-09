@@ -82,7 +82,6 @@ function Join() {
                 method: 'GET',
                 url: constants.BackUrl + `/api/v1/inventory/admin/id-check?id=${state.id}`
             }).then((response) => {
-                console.log(response);
                 if (response.data === "sucess") {
                     alert("사용해도 괜찮은 아이디입니다.");
                     setState({
@@ -115,9 +114,7 @@ function Join() {
         } else if (!reg_email.test(email)) {
             alert("이메일을 다시 확인해주세요.");
         } else if (state.tel1 === "" || state.tel2 === "" || state.tel3 === "") {
-            console.log(state.tel1);
-            console.log(state.tel2);
-            console.log(state.tel3);
+
 
             alert("연락처를 다시 확인해주세요.");
         } else {

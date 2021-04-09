@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,9 +16,8 @@ import ProductCreate from '../component/Admin/ProductCreate';
 import ProductListSection from '../component/Admin/ProductListSection';
 import ProductSearch from '../component/Admin/ProductSearch';
 import ProductPageSection from '../component/Admin/ProductPageSection';
+import Header from '../component/Header';
 
-import sesssionStorageCustom from '../lib/sessionStorageCustom';
-import { GlobalStateContext } from '../App';
 import constants from '../lib/constants';
 
 function Admin() {
@@ -35,9 +34,6 @@ function Admin() {
 
     const [tab, setTab] = useState(0);
     const [pdCreate, setPdCreate] = useState(false);
-
-    const admin = sesssionStorageCustom.getJsonItem('admin');
-    const { setAdminState } = useContext(GlobalStateContext);
     
     const handleChange = (event, newValue) => {
         if(newValue === 1){
@@ -73,7 +69,6 @@ function Admin() {
             method: 'GET',
             url: constants.BackUrl + `/api/v1/inventory/admin/user`,
         }).then((response) => {
-            console.log(response);
             setUserlist(response.data.userlist);
             setPageCount(Math.ceil(response.data.usercount / 10));
             setPdCreate(false);
@@ -81,7 +76,6 @@ function Admin() {
                 method: `GET`,
                 url: constants.BackUrl + `/api/vi/inventory/products/list`,
             }).then((response)=>{
-                console.log(response.data);
                 setProductlist(response.data.list);
                 setProductCount(Math.ceil(response.data.list_num / 10));
             }).catch((error)=>{
@@ -92,25 +86,12 @@ function Admin() {
         });
     }, [location])
 
-
-    const onLogoutHandler = () => {
-        setAdminState(false);
-        sessionStorage.clear();
-    };
-
     return (
         <div>
             <div id="wrapper">
                 <div id="main">
                     <div className="inner">
-
-                        <header id="header">
-                            <a href="/admin" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>
-                            <ul className="icons">
-                                <li>{admin.name}님 안녕하세요.</li>
-                                <li><a href="/" onClick={onLogoutHandler}>로그아웃</a></li>
-                            </ul>
-                        </header>
+                        <Header />
                         <AppBar position="static" color="transparent" className={classes.appbar}>
                             <Tabs
                                 value={tab}

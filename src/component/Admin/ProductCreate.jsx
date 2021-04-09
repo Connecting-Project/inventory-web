@@ -3,8 +3,9 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import constants from '../../lib/constants';
-
+import {useHistory} from 'react-router-dom';
 function ProductCreate() {
+    const history = useHistory();
     const classes = useStyles();
     const imageUploader = useRef(null);
     const [product, setProduct] = useState({
@@ -22,7 +23,6 @@ function ProductCreate() {
         const { name, value } = e.target;
 
         if (name === "price" || name === "quantity") {
-            console.log(e);
             if (Number(e.nativeEvent.data) >= 0 && Number(e.nativeEvent.data) <= 9 && !(e.nativeEvent.data === " ")) {
                 setProduct({
                     ...product,
@@ -64,7 +64,6 @@ function ProductCreate() {
     }
 
     const onProductCreate = (e) => {
-        console.log(product.price);
 
         if(product.buy === ""){
             alert("구입처를 입력해주세요.");
@@ -97,8 +96,7 @@ function ProductCreate() {
                     stock: product.quantity
                 },
             }).then((response)=>{
-                console.log(response);
-    
+                history.push(`/admin`);
             }).catch((error)=>{
                 console.log(error);
             })

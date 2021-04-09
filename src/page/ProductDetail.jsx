@@ -1,8 +1,7 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 
-import sesssionStorageCustom from '../lib/sessionStorageCustom';
-import { GlobalStateContext } from '../App';
+import sessionStorageCustom from '../lib/sessionStorageCustom';
 import constants from '../lib/constants';
 import { useLocation, useHistory } from 'react-router-dom';
 
@@ -12,18 +11,17 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 
+import Header from '../component/Header';
 import "../assets/css/product.css";
 
 function ProductDetail() {
     const classes = useStyles();
     const history = useHistory();
-
     const location = useLocation();
 
-    const admin = sesssionStorageCustom.getJsonItem('admin');
-    const user = sesssionStorageCustom.getJsonItem('user');
+    const admin = sessionStorageCustom.getJsonItem('admin');
+    const user = sessionStorageCustom.getJsonItem('user');
 
-    const { setAdminState, setLoginState } = useContext(GlobalStateContext);
     const [open, setOpen] = useState(false);
     const [product, setProduct] = useState({
         id: "",
@@ -46,7 +44,6 @@ function ProductDetail() {
             method: `GET`,
             url: constants.BackUrl + `/api/vi/inventory/products/detail?id=${location.pathname.substring(9)}`
         }).then((response) => {
-            console.log(response);
             setProduct(response.data.product);
             setLogs(response.data.logs);
         }).catch((error) => {
@@ -54,22 +51,12 @@ function ProductDetail() {
         });
     }, [location]);
 
-    const onAdminLogoutHandler = () => {
-        setAdminState(false);
-        sessionStorage.clear();
-    };
-
-    const onUserLogoutHandler = () => {
-        setLoginState(false);
-        sessionStorage.clear();
-    };
-
     const onAdminBackHandler = () => {
         history.push(`/admin`);
     }
 
     const onUserBackHandler = () => {
-        history.push(`/main`);
+        window.history.back();
     }
 
     const onMoveUpdateHandler = () => {
@@ -130,16 +117,7 @@ function ProductDetail() {
             <div id="wrapper">
                 <div id="main">
                     <div className="inner">
-                        <header id="header">
-                            {admin && <a href="/admin" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>}
-                            {user && <a href="/main" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>}
-                            <ul className="icons">
-                                {admin && <li>{admin.name}님 안녕하세요.</li>}
-                                {admin && <li><a href="/" onClick={onAdminLogoutHandler}>로그아웃</a></li>}
-                                {user && <li>{user.name}님 안녕하세요.</li>}
-                                {user && <li><a href="/" onClick={onUserLogoutHandler}>로그아웃</a></li>}
-                            </ul>
-                        </header>
+                        <Header />
 
                         <div className="product_read_container">
 
@@ -214,8 +192,7 @@ function ProductDetail() {
 
                                     <hr />
                                     <h3>사용로그</h3>
-                                    {logs.length !== 0 ?
-                                        <table className="log_table">
+                                    <table className="log_table">
                                             <colgroup>
                                                 <col style={{ width: "15%" }} />
                                                 <col style={{ width: "25%" }} />
@@ -232,6 +209,17 @@ function ProductDetail() {
                                                     <td>상태</td>
                                                 </tr>
                                             </thead>
+                                    </table>
+                                    {logs.length !== 0 ?
+                                        <div className="log_table_container">
+                                        <table className="log_table">
+                                            <colgroup>
+                                                <col style={{ width: "15%" }} />
+                                                <col style={{ width: "25%" }} />
+                                                <col style={{ width: "20%" }} />
+                                                <col style={{ width: "25%" }} />
+                                                <col style={{ width: "15%" }} />
+                                            </colgroup>
                                             <tbody>
                                                 {logs.map((log) => (
                                                     <tr key={log.id}>
@@ -243,7 +231,10 @@ function ProductDetail() {
                                                     </tr>
                                                 ))}
                                             </tbody>
-                                        </table> : <>로그가 없습니다.</>
+                                        </table>
+                                        </div> : <h5 style={{textAlign: 'center', marginTop: '30px'}}>로그가 없습니다.</h5>
+
+                                        
                                     }
 
                                     {admin && <button className="update_btn" onClick={onMoveUpdateHandler}>수정하기</button>}

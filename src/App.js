@@ -13,10 +13,12 @@ import Join from './page/Join';
 import Admin from './page/Admin';
 import ProductDetail from './page/ProductDetail';
 import ProductUpdate from './page/ProductUpdate';
+import UserPage from './page/UserPage';
 
 export const GlobalStateContext = React.createContext(null);
 
 function App() {
+  const user = sessionStorageCustom.getJsonItem('user');
 
   const [loginState, setLoginState] = useState(Boolean(sessionStorageCustom.getJsonItem('user')));
   const [adminState, setAdminState] = useState(Boolean(sessionStorageCustom.getJsonItem('admin')));
@@ -33,10 +35,12 @@ function App() {
           <RestrictRoute exact path="/join" component={Join} fallback={() => <Redirect to={`/`} />} isAllow={!(loginState || adminState)}/>
 
           <RestrictRoute exact path="/main" component={Main} fallback={() => <Redirect to={`/`} />} isAllow={loginState}/>
-          <RestrictRoute exact path="/admin" component={Admin} fallback={() => <Redirect to={`/`} />} isAllow={adminState}/>
-          <RestrictRoute exact path="/product/update/:id" component={ProductUpdate} fallback={() => <Redirect to={`/`} />} isAllow={adminState}/>
+          <RestrictRoute exact path="/admin" component={Admin} fallback={() => <Redirect to={`/`} />} isAllow={adminState || (user && user.uauth === 2)}/>
+          <RestrictRoute exact path="/product/update/:id" component={ProductUpdate} fallback={() => <Redirect to={`/`} />} isAllow={adminState || (user && user.uauth === 2)}/>
 
           <RestrictRoute exact path="/product/:id" component={ProductDetail} fallback={() => <Redirect to={`/`} />} isAllow={loginState || adminState}/>
+          <RestrictRoute exact path="/mypage" component={UserPage} fallback={() => <Redirect to={`/`} />} isAllow={loginState}/>
+
         </Switch>
       </GlobalStateContext.Provider>
     </div>

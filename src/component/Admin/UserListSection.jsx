@@ -2,27 +2,27 @@ import React from 'react';
 import axios from 'axios';
 import constants from '../../lib/constants';
 import '../../assets/css/userlist.css';
+import sessionStorageCustom from '../../lib/sessionStorageCustom';
 
 function UserListSection({ userlist, pageNo, setUserlist }) {
 
+    const adminuser = sessionStorageCustom.getJsonItem('user');
     const onAuthHandler = (e) => {
         const { id, name, value } = e.target;
         setUserlist(userlist.map(user =>
-                user.id === id ? {
-                    ...user,
-                    [name] : value,
-                    
-                } : user
+            user.id === id ? {
+                ...user,
+                [name]: value,
+
+            } : user
         ));
 
-        const select_user = userlist.filter(user => user.id === id );
-
-        console.log(select_user);
+        const select_user = userlist.filter(user => user.id === id);
 
         axios({
             method: `POST`,
             url: constants.BackUrl + `/api/v1/inventory/admin/change-auth?level=${value}`,
-            data : {
+            data: {
                 id: select_user[0].id,
                 email: select_user[0].email,
                 name: select_user[0].name,
@@ -31,9 +31,9 @@ function UserListSection({ userlist, pageNo, setUserlist }) {
                 productGroup: select_user[0].productGroup,
                 tel: select_user[0].tel
             }
-        }).then((response)=>{
-            console.log(response);
-        }).catch((error)=>{
+        }).then((response) => {
+            alert("권한이 변경되었습니다.");
+        }).catch((error) => {
             console.log(error);
         });
     }
@@ -41,10 +41,10 @@ function UserListSection({ userlist, pageNo, setUserlist }) {
     return (
         <table className="userlist_table">
             <colgroup>
-                    <col style={{ width: "25%" }} />
-                    <col style={{ width: "20%" }} />
-                    <col style={{ width: "40%" }} />
-                    <col style={{ width: "15%" }} />
+                <col style={{ width: "25%" }} />
+                <col style={{ width: "20%" }} />
+                <col style={{ width: "40%" }} />
+                <col style={{ width: "15%" }} />
             </colgroup>
             <thead>
                 <tr>
@@ -56,22 +56,27 @@ function UserListSection({ userlist, pageNo, setUserlist }) {
             </thead>
             <tbody>
                 {userlist.map((user, index) => {
-                    if((pageNo-1)*10<= index && index < pageNo*10){
-                        return(
-                            <tr key={user.id}>
-                                <td>{user.id}</td>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>
-                                    <select className="user_uauth_select" name="uauth" id={user.id} defaultValue={user.uauth} onChange={onAuthHandler}>
-                                        <option value="0">없음</option>
-                                        <option value="1">일반유저</option>
-                                        <option value="2">관리자</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        )
-                    }else{
+                    if ((pageNo - 1) * 10 <= index && index < pageNo * 10) {
+                        if (adminuser && adminuser.id === user.id) {
+                            return null;
+                        }else{
+                            return (
+                                <tr key={user.id}>
+                                    <td>{user.id}</td>
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>
+                                        <select className="user_uauth_select" name="uauth" id={user.id} defaultValue={user.uauth} onChange={onAuthHandler}>
+                                            <option value="0">없음</option>
+                                            <option value="1">일반유저</option>
+                                            <option value="2">관리자</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            )
+                        }
+                        
+                    } else {
                         return null;
                     }
                 })}

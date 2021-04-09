@@ -27,7 +27,6 @@ function UserLogin() {
     }
 
     const resSuccessGoogle = (response) => {
-        console.log(response);
         axios({
             method:'POST',
             url:constants.BackUrl+`/api/v1/inventory/accounts/login`,

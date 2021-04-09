@@ -44,7 +44,6 @@ function AdminLogin(){
                 pwd: state.pw,
             }
         }).then((response)=>{
-            console.log(response);
             
             sessionStorageCustom.setJsonItem('admin',{
                 id : response.data.id,

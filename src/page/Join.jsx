@@ -130,7 +130,7 @@ function Join() {
                 }
             }).then((response) => {
                 alert("회원가입이 완료되었습니다.");
-                history.push(`/admin_login`);
+                history.push(`/`);
             }).catch((error) => {
                 console.log(error);
             })

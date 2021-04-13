@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import constants from '../lib/constants';
+import { GlobalStateContext } from '../App';
+import sessionStorageCustom from '../lib/sessionStorageCustom';
 
 import '../assets/css/exist.css';
 
 function Exist(){
     const location = useLocation();
     const history = useHistory();
+
+    const { setExist } = useContext(GlobalStateContext);
 
     useEffect(()=>{
         axios({
@@ -16,6 +20,10 @@ function Exist(){
         }).then((response)=>{
             setTimeout(()=>{
                 if(response.data === true){
+                    sessionStorageCustom.setJsonItem('exist',{
+                        status: true,
+                    });
+                    setExist(true);
                     history.push(`/user_login`);
                 }else{
                     history.push(`/join`);

@@ -22,24 +22,27 @@ function App() {
 
   const [loginState, setLoginState] = useState(Boolean(sessionStorageCustom.getJsonItem('user')));
   const [adminState, setAdminState] = useState(Boolean(sessionStorageCustom.getJsonItem('admin')));
+  const [exist, setExist] = useState(Boolean(sessionStorageCustom.getJsonItem('exist')));
 
   return (
     <div className="App">
-      <GlobalStateContext.Provider value={{ loginState, setLoginState , adminState, setAdminState }}>
+      <GlobalStateContext.Provider value={{ loginState, setLoginState , adminState, setAdminState, exist, setExist }}>
         <Switch>
+          {console.log(exist)}
           <Route exact path="/" component={Exist} />
 
           <Route exact path="/user_login" component={UserLogin} />
           <Route exact path="/admin_login" component={AdminLogin} />
 
-          <RestrictRoute exact path="/join" component={Join} fallback={() => <Redirect to={`/`} />} isAllow={!(loginState || adminState)}/>
+          <RestrictRoute exact path="/join" component={Join} fallback={() => <Redirect to={`/`} />} isAllow={!exist}/>
 
-          <RestrictRoute exact path="/main" component={Main} fallback={() => <Redirect to={`/`} />} isAllow={loginState}/>
           <RestrictRoute exact path="/admin" component={Admin} fallback={() => <Redirect to={`/`} />} isAllow={adminState || (user && user.uauth === 2)}/>
           <RestrictRoute exact path="/product/update/:id" component={ProductUpdate} fallback={() => <Redirect to={`/`} />} isAllow={adminState || (user && user.uauth === 2)}/>
 
-          <RestrictRoute exact path="/product/:id" component={ProductDetail} fallback={() => <Redirect to={`/`} />} isAllow={loginState || adminState}/>
+          <RestrictRoute exact path="/main" component={Main} fallback={() => <Redirect to={`/`} />} isAllow={loginState}/>
           <RestrictRoute exact path="/mypage" component={UserPage} fallback={() => <Redirect to={`/`} />} isAllow={loginState}/>
+          
+          <RestrictRoute exact path="/product/:id" component={ProductDetail} fallback={() => <Redirect to={`/`} />} isAllow={loginState || adminState}/>
 
         </Switch>
       </GlobalStateContext.Provider>

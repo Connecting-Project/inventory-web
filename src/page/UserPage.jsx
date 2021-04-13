@@ -35,12 +35,15 @@ function UserPage() {
             method: `POST`,
             url: constants.BackUrl + `/api/vi/inventory/devices/return?device_id=${id}`
         }).then((response) => {
+
             alert("반납이 완료되었습니다.");
             axios({
                 method: `POST`,
                 url: constants.BackUrl + `/api/vi/inventory/devices/user-device?user_id=${user.id}`
             }).then((response) => {
                 setLogs(response.data.list);
+                setPageNo(1);
+                setPageCount(Math.ceil(response.data.size / 10));
             }).catch((error) => {
                 console.log(error);
             })

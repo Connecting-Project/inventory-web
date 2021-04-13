@@ -33,7 +33,7 @@ function Exist(){
         }).catch((error)=>{
             console.log(error);
         })
-    },[location, history])
+    },[location, history, setExist])
 
     return (
         <div className="loading-container">

@@ -169,7 +169,7 @@ function ProductDetail() {
                                     <div className="product_read_row">
                                         <div>가격</div>
                                         <div>
-                                            {product.productname}
+                                            {product.price}
                                         </div>
                                     </div>
 

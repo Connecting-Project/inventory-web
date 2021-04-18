@@ -19,6 +19,7 @@ function Exist(){
             url: constants.BackUrl+ `/api/v1/inventory/admin/admin-check`
         }).then((response)=>{
             setTimeout(()=>{
+                console.log(response);
                 if(response.data === true){
                     sessionStorageCustom.setJsonItem('exist',{
                         status: true,

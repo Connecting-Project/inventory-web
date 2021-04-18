@@ -4065,6 +4065,7 @@
 			padding: none !important;
 			box-shadow: none !important;
 			outline: none !important;
+			font-size: 100%;
 		}
 
 		.logout_btn > button:active {

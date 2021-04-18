@@ -29,7 +29,6 @@ function ProductSearch({setProductlist , setProductCount, setProductPageNo}) {
                     method: `GET`,
                     url: constants.BackUrl + `/api/vi/inventory/products/sn?sn=${name}`
                 }).then((response)=>{
-                    console.log(response);
                     setProductlist(response.data);
                     setProductCount(1);
                     setName('');

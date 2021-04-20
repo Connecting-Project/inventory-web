@@ -27,6 +27,18 @@ Follow these installation instructions:
 
 본 프로그램을 온프레미스 환경에서 사용하기 위해서는 접속정보를 수정해야 합니다. 
 
+* **login-web/src/lib/constants.js** 
+
+  ```javascript
+  /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
+  export default {
+      BackUrl: '$(BACKEND-URL)',
+    };
+    
+  ```
+
+  
+
 ### Manually
 
 ```bash

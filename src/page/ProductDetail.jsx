@@ -14,7 +14,7 @@ import Fade from '@material-ui/core/Fade';
 import Header from '../component/Header';
 import "../assets/css/product.css";
 
-import { BarcodeQrCode } from '@grapecity/wijmo.react.barcode.common';
+import QRCode from 'react-qr-code';
 
 function ProductDetail() {
     const classes = useStyles();
@@ -240,9 +240,9 @@ function ProductDetail() {
                                     }
 
                                     <h3>QR코드</h3>
-                                    
-                                    <BarcodeQrCode value={`https://inventory.hawaiian-pizza.ml/product/${product.id}`}/>
-                                   
+                                    <div className="qrcode_div">
+                                        <QRCode value={`https://inventory.hawaiian-pizza.ml/product/${product.id}`} size="128"></QRCode>
+                                    </div>
 
                                     {admin && <button className="update_btn" onClick={onMoveUpdateHandler}>수정하기</button>}
                                     {admin && <button className="delete_btn" onClick={onProductDeleteHandler}>삭제하기</button>}

@@ -26,6 +26,7 @@ function UserPage() {
         <header id="header">
             {admin && <a href="/admin" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>}
             {user && <a href="/main" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>}
+            {!admin && !user && <a href="/main" className="logo"><strong>Hawaiian-Pizza</strong> INVENTORY</a>}
             <ul className="icons">
                 {admin && <li>{admin.name}님 안녕하세요.</li>}
                 {admin && <li><a href="/" onClick={onAdminLogoutHandler}>로그아웃</a></li>}

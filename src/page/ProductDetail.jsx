@@ -238,10 +238,10 @@ function ProductDetail() {
 
                                         
                                     }
-
+                                    <hr/>
                                     <h3>QR코드</h3>
                                     <div className="qrcode_div">
-                                        <QRCode value={`https://inventory.hawaiian-pizza.ml/product/${product.id}`} size="128"></QRCode>
+                                        <QRCode value={`https://inventory.hawaiian-pizza.ml/product/${product.id}`} size={128} ></QRCode>
                                     </div>
 
                                     {admin && <button className="update_btn" onClick={onMoveUpdateHandler}>수정하기</button>}

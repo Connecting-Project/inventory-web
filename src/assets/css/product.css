@@ -236,3 +236,9 @@
 .device_table button:hover {
     background-color: #ffdfb6;
 }
+
+.wj-barcode-qrcode {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}

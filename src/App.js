@@ -28,7 +28,6 @@ function App() {
     <div className="App">
       <GlobalStateContext.Provider value={{ loginState, setLoginState , adminState, setAdminState, exist, setExist }}>
         <Switch>
-          {console.log(exist)}
           <Route exact path="/" component={Exist} />
 
           <Route exact path="/user_login" component={UserLogin} />
@@ -42,7 +41,9 @@ function App() {
           <RestrictRoute exact path="/main" component={Main} fallback={() => <Redirect to={`/`} />} isAllow={loginState}/>
           <RestrictRoute exact path="/mypage" component={UserPage} fallback={() => <Redirect to={`/`} />} isAllow={loginState}/>
           
-          <RestrictRoute exact path="/product/:id" component={ProductDetail} fallback={() => <Redirect to={`/`} />} isAllow={loginState || adminState}/>
+          <Route exact path="/product/:id" component={ProductDetail} />
+
+          {/* <RestrictRoute exact path="/product/:id" component={ProductDetail} fallback={() => <Redirect to={`/`} />} isAllow={loginState || adminState}/> */}
 
         </Switch>
       </GlobalStateContext.Provider>

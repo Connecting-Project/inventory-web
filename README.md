@@ -2,7 +2,7 @@
 
 Project made by Hawaiian Pizza.
 
-벡엔드 API와 리엑트로 개발된 프론트로 구성된 웹 - 서버 기반 애플리케이션입니다. URL은 다음과 같습니다.
+Spring Boot, 리엑트로 개발된 프론트로 구성된 웹 - 서버 기반 애플리케이션입니다. URL은 다음과 같습니다.
 
 - https://inventory.hawaiian-pizza.ml/
 
@@ -26,6 +26,18 @@ Project made by Hawaiian Pizza.
 Follow these installation instructions:
 
 본 프로그램을 온프레미스 환경에서 사용하기 위해서는 접속정보를 수정해야 합니다. 
+
+* **login-web/src/lib/constants.js** 
+
+  ```javascript
+  /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
+  export default {
+      BackUrl: '$(BACKEND-URL)',
+    };
+    
+  ```
+
+  
 
 ### Manually
 

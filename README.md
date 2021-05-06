@@ -4,7 +4,7 @@ Project made by Hawaiian Pizza.
 
 Spring Boot, 리엑트로 개발된 프론트로 구성된 웹 - 서버 기반 애플리케이션입니다. URL은 다음과 같습니다.
 
-- https://inventory.hawaiian-pizza.ml/
+- https://inventory.hawaiian-pizza.space/
 
 ## Features
 

@@ -44,15 +44,19 @@ function AdminLogin(){
                 pwd: state.pw,
             }
         }).then((response)=>{
-            
-            sessionStorageCustom.setJsonItem('admin',{
-                id : response.data.id,
-                email : response.data.email,
-                name : response.data.name,
-                tel : response.data.tel,
-            });
-            setAdminState(true);
-            history.push(`/admin`);
+            if(response.data === "login fail"){
+                alert('아이디와 비번이 일치하지 않습니다.');
+            }else{
+                sessionStorageCustom.setJsonItem('admin',{
+                    id : response.data.id,
+                    email : response.data.email,
+                    name : response.data.name,
+                    tel : response.data.tel,
+                });
+                setAdminState(true);
+                history.push(`/admin`);
+
+            }
             
         }).catch((error)=>{
             console.log(error);
